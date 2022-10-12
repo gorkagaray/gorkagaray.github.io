@@ -1,0 +1,68 @@
+<html lang = "es">
+<head>
+<title></title>
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+rel = "stylesheet">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+$(document).ready(function() {
+$( "#fecha" ).datepicker({
+	dateFormat:"dd-mm-yy",
+	firstDay: 1,
+	minDate: 1,
+	monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
+	dayNamesMin: [ "Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab" ],
+	onSelect: 
+		function (date, datepicker) {
+			var fechaCitaMedica = $(this).datepicker( "getDate" );
+			pintarProgramas(calcularProgramas(diasDesdeHoy(fechaCitaMedica)))
+		},
+	beforeShow: function(){    
+           $(".ui-datepicker").css('font-size', 12) 
+    }
+});
+});
+function diasDesdeHoy(fechaCitaMedica) {
+	var hoy = new Date();	
+	return (fechaCitaMedica.getTime() - hoy.getTime()) / (1000 * 60 * 60 * 24);
+}
+
+function calcularProgramas(numeroDeDias) {
+	return Math.ceil(numeroDeDias * 0.67);
+}
+
+function pintarProgramas(numeroDeProgramas) {
+	$( "#programas" ).empty();
+	[...numeroDeProgramas+''].forEach( digito => {
+		$( "#programas" ).append($('<img>',{src: "numbers/" + digito + ".jpg", width: 100}))
+	});
+}
+</script>
+</head>
+<body style = "text-align: center;">
+<table style = "width: 100%; text-align: center;">
+	<tr>
+		<td><h1>Tengo cita médica para el día...</h1></td>
+	</tr>
+	<tr>
+		<td>
+			<div style = "display:inline-block; margin:0 auto;">
+				<div id = "fecha"/>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<h1>... lo que me permitirá poder ver
+			<p id = "programas" style = "color:red">(elige fecha para averiguarlo)</p>
+	programas de AR mientras espero.
+			</h1>
+		</td>
+	</tr>
+</table>
+<div style="position:fixed; width:100%; height:20px; bottom:0px; ">
+	Licenciado como: <a href = "https://creativecommons.org/licenses/by-sa/4.0/" target = "_blank">CC-BY-SA-4.0</a>
+</div>
+</body>
+</html>
